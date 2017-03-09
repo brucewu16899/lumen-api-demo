@@ -1,0 +1,292 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Cityzine API",
+        "description": "Cityzine API Documentation",
+        "contact": {
+            "name": "service@citytalk.tw",
+            "url": "https://www.citytalk.tw/zine/"
+        },
+        "version": "3.0.0"
+    },
+    "host": "localhost:8800",
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/authorizations": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "\u521b\u5efa\u4e00\u4e2atoken (create a token)",
+                "description": "\u521b\u5efa\u4e00\u4e2atoken (create a token)",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "\u90ae\u7bb1",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "\u5bc6\u7801",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Token created",
+                        "schema": {
+                            "properties": {
+                                "token": {
+                                    "description": "jwt\u7684token\u503c",
+                                    "type": "string",
+                                    "default": "",
+                                    "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbHVtZW4tYXBpLWRlbW8uZGV2L2FwaS9hdXRob3JpemF0aW9ucyIsImlhdCI6MTQ4Mzk3NTY5MywiZXhwIjoxNDg5MTU5NjkzLCJuYmYiOjE0ODM5NzU2OTMsImp0aSI6ImViNzAwZDM1MGIxNzM5Y2E5ZjhhNDk4NGMzODcxMWZjIiwic3ViIjo1M30.hdny6T031vVmyWlmnd2aUr4IVM9rm2Wchxg5RX_SDpM"
+                                },
+                                "expired_at": {
+                                    "description": "\u8fc7\u671f\u65f6\u95f4",
+                                    "type": "string",
+                                    "default": "",
+                                    "example": "2017-03-10 15:28:13"
+                                },
+                                "refresh_expired_at": {
+                                    "description": "\u5237\u65b0token\u7684\u8fc7\u671f\u65f6\u95f4",
+                                    "type": "string",
+                                    "default": "",
+                                    "example": "2017-01-23 15:28:13"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "description": "\u9519\u8bef\u4fe1\u606f",
+                                    "type": "string",
+                                    "default": "UserNotFound"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/authorizations/current": {
+            "put": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "\u5237\u65b0token(refresh token)",
+                "description": "\u5237\u65b0token(refresh token)",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "\u7528\u6237\u65e7\u7684jwt-token, value\u4ee5Bearer\u5f00\u5934",
+                        "required": true,
+                        "type": "string",
+                        "default": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL21vYmlsZS5kZWZhcmEuY29tXC9hdXRoXC90b2tlbiIsImlhdCI6IjE0NDU0MjY0MTAiLCJleHAiOiIxNDQ1NjQyNDIxIiwibmJmIjoiMTQ0NTQyNjQyMSIsImp0aSI6Ijk3OTRjMTljYTk1NTdkNDQyYzBiMzk0ZjI2N2QzMTMxIn0.9UPMTxo3_PudxTWldsf4ag0PHq1rK8yO9e5vqdwRZLY"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token updated",
+                        "examples": {
+                            "application/json": {
+                                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbHVtZW4tYXBpLWRlbW8uZGV2L2FwaS9hdXRob3JpemF0aW9ucyIsImlhdCI6MTQ4Mzk3NTY5MywiZXhwIjoxNDg5MTU5NjkzLCJuYmYiOjE0ODM5NzU2OTMsImp0aSI6ImViNzAwZDM1MGIxNzM5Y2E5ZjhhNDk4NGMzODcxMWZjIiwic3ViIjo1M30.hdny6T031vVmyWlmnd2aUr4IVM9rm2Wchxg5RX_SDpM",
+                                "expired_at": "2017-03-10 15:28:13",
+                                "refresh_expired_at": "2017-01-23 15:28:13"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/posts": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "\u5e16\u5b50\u5217\u8868(post list)",
+                "description": "\u5e16\u5b50\u5217\u8868(post list)",
+                "operationId": "index",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "comments:limit(x), user",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u5206\u9875\u7684\u5e16\u5b50\u5217\u8868",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Post"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/posts": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "\u6211\u7684\u5e16\u5b50\u5217\u8868(my post list)",
+                "description": "\u6211\u7684\u5e16\u5b50\u5217\u8868(my post list)",
+                "operationId": "userIndex",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "comments:limit(x)",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\u6211\u7684\u5e16\u5b50\u5217\u8868",
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Post"
+                                    }
+                                },
+                                "meta": {
+                                    "properties": {
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "int",
+                                                    "default": "50"
+                                                },
+                                                "count": {
+                                                    "type": "int",
+                                                    "default": "15"
+                                                },
+                                                "per_page": {
+                                                    "type": "int",
+                                                    "default": "15"
+                                                },
+                                                "current_page": {
+                                                    "type": "int",
+                                                    "default": "1"
+                                                },
+                                                "total_pages": {
+                                                    "type": "int",
+                                                    "default": "4"
+                                                },
+                                                "links": {
+                                                    "properties": {
+                                                        "next": {
+                                                            "type": "string",
+                                                            "default": "http://localhost:8800/api/posts?page=2"
+                                                        },
+                                                        "prev": {
+                                                            "type": "string",
+                                                            "default": "http://localhost:8800/api/posts?page=2"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "Error": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Post": {
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "it is a title"
+                },
+                "content": {
+                    "type": "string",
+                    "example": "it is content"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2017-01-25 22:52:42"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "securityDefinitions": {
+        "jwt": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
